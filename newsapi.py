@@ -45,11 +45,16 @@ class news(Resource):
         response = app.response_class(
             response=toJson(json_results),
             status=200,
-            mimetype='application/json'
+            mimetype='text/html'
         )
         return response
- 
+
+class home(Resource):
+    def get(self):
+        return 'Hello Isentia'
+
 api.add_resource(news, '/news/search/<string:keyword>')
+api.add_resource(home, '/')
 
 if __name__ == '__main__':
      app.run()
