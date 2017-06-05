@@ -10,10 +10,12 @@ from bson import json_util, ObjectId
 app = Flask(__name__)
 api = Api(app)
 
+# we can put this is a config file and can autoswitch to different environment like dev, uat, prod
+# but for 
 uri = 'mongodb://isentia:scrapy@aws-ap-southeast-1-portal.2.dblayer.com:15424/isentia'
-client = MongoClient(uri)                   #Configure the connection to the database
-db = client.isentia                         #Select the database
-newsdb = db.news                              #Select the collection
+client = MongoClient(uri)                       #Configure the connection to the database
+db = client.isentia                             #Select the database
+newsdb = db.news                                #Select the collection
 
 def toJson(data):
     """Convert Mongo object(s) to JSON"""
@@ -21,7 +23,10 @@ def toJson(data):
 
 class news(Resource):
     def get(self, keyword):
+        #create a regular expression of the keyword
         regxKeyword = re.compile(keyword, re.IGNORECASE)
+
+        #search to all fields in the document
         query = {
             '$or': [
                 {'title': regxKeyword},
@@ -32,6 +37,7 @@ class news(Resource):
         results = newsdb.find(query)
         
         logging.info('Searching for:', keyword)
+        
         json_results = []
         for result in results:
           json_results.append(result)
