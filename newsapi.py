@@ -1,10 +1,10 @@
 import json
 import re
 import logging
-from flask import Flask, request, jsonify
+from flask import Flask
 from flask_restful import Resource, Api
 from pymongo import MongoClient
-from bson import json_util, ObjectId
+from bson import json_util
 
 
 app = Flask(__name__)
